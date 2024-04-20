@@ -45,6 +45,5 @@ class OrientationSensor(
 
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        // Not needed for this example
     }
 }
