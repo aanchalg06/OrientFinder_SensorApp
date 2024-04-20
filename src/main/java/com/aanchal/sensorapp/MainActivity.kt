@@ -104,7 +104,7 @@ class MainActivity : ComponentActivity() {
                         MyApp(viewModel,navController)
                     }
                     composable("history") {
-                        ChartClass(viewModel)
+                        GraphClass(viewModel)
                     }
                 }
             }
@@ -184,25 +184,22 @@ fun MyApp(viewModel: SensorVM, navController: NavHostController) {
 
         Button(
             modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(Color.White),
+            colors = ButtonDefaults.buttonColors(Color.Blue),
             onClick = {
                 viewModel.copyDataintoDataset(isLoading) { isLoading.value = false }
                 navController.navigate("history")
             }
         ) {
-            Text("Open History", color = Color.Black)
-            if (isLoading.value) {
-                CircularProgressIndicator() // Show loading indicator
-            }
+            Text("Show History Graph", color = Color.Black)
         }
         Button(modifier = Modifier
             .fillMaxWidth()
-            ,colors = ButtonDefaults.buttonColors(Color.White),
+            ,colors = ButtonDefaults.buttonColors(Color.Blue),
             onClick = {
-                saveFileLauncher.launch("database.txt")
+                saveFileLauncher.launch("data_orient.txt")
             },
             content ={
-                Text("Download Text File", color = Color.Black)
+                Text("Load Databse in your device", color = Color.Black)
             }
         )
     }
@@ -227,7 +224,7 @@ private fun writeDatabaseToFile(
 }
 
 @Composable
-fun ChartClass(viewModel: SensorVM) {
+fun GraphClass(viewModel: SensorVM) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -242,6 +239,7 @@ fun ChartClass(viewModel: SensorVM) {
     }
 }
 
+//picked from yml library to get graphs
 @Composable
 fun LineChartScreen(data: List<Float>, angleName: String) {
     val steps = 5
@@ -255,7 +253,6 @@ fun LineChartScreen(data: List<Float>, angleName: String) {
         .axisLineColor(MaterialTheme.colorScheme.tertiary)
         .build()
 
-    // Generate y-axis data
     val yAxisData = AxisData.Builder()
         .steps(steps * 2)
         .backgroundColor(Color.Transparent)
