@@ -89,11 +89,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize the database
         val database = DatabaseSensor.getDatabase(this)
         orientationDao = database.orientationDao()
-
-        // Initialize the ViewModel
 
         setContent {
             SensorAppTheme {
@@ -137,10 +134,7 @@ fun MyApp(viewModel: SensorVM, navController: NavHostController) {
     val viewModel: SensorVM = viewModel
     var context = LocalContext.current
     var contentResolver = LocalContext.current.contentResolver
-    // Collect orientation data from ViewModel
     val orientationData by viewModel.orientation.collectAsState()
-
-    // Loading state
     var isLoading = mutableStateOf(false)
 
 
@@ -175,23 +169,6 @@ fun MyApp(viewModel: SensorVM, navController: NavHostController) {
                 orientationData.yaw
             )
         }
-//        Row {
-//            if (isLoading.value) {
-//                CircularProgressIndicator() // Show loading indicator
-//            }
-//
-//            if (!isLoading.value) {
-//                Button(
-//                    onClick = {
-//                        isLoading.value = true // Set loading state to true
-//
-//                        viewModel.copyDataintoDataset(isLoading) { isLoading.value = false } // Clear loading state after copyDataintoDataset
-//                    }
-//                ) {
-//                    Text("Start", color = Color.Black)
-//                }
-//            }
-//        }
         Text(text = "Roll: ${orientationData.roll}")
         Text(text = "Pitch: ${orientationData.pitch}")
         Text(text = "Yaw: ${orientationData.yaw}")
@@ -270,7 +247,7 @@ fun LineChartScreen(data: List<Float>, angleName: String) {
     val steps = 5
 
     val xAxisData = AxisData.Builder()
-        .axisStepSize((data.size / 10).toFloat().dp) // Adjust the step size according to the data size
+        .axisStepSize((data.size / 10).toFloat().dp)
         .backgroundColor(Color.Transparent)
         .steps(data.size - 1)
         .labelData { i -> i.toString() }
@@ -280,18 +257,16 @@ fun LineChartScreen(data: List<Float>, angleName: String) {
 
     // Generate y-axis data
     val yAxisData = AxisData.Builder()
-        .steps(steps * 2) // Double the steps to accommodate negative values
+        .steps(steps * 2)
         .backgroundColor(Color.Transparent)
         .labelAndAxisLinePadding(20.dp)
         .labelData { i ->
-            // Adjust labels to include negative values
             val yScale = 100 / steps
             ((i - steps) * yScale).toString()
         }
         .axisLineColor(MaterialTheme.colorScheme.tertiary)
         .build()
 
-    // Create points data using angle values
     val pointsData = data.mapIndexed { index, value ->
         Point(index.toFloat(), value)
     }
