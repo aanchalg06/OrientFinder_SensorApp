@@ -27,10 +27,10 @@ class DataRepository(private val orientationDao: OrientationDao) {
         isLoading: MutableState<Boolean>
     ){
         withContext(Dispatchers.IO) {
-            isLoading.value=true // Set loading flag to true
+            isLoading.value=true
             val rotationsFromDB = orientationDao.getAllOrientationData()
             databaseSet.addAll(rotationsFromDB)
-            isLoading.value= (false) // Clear loading flag after data fetching is done
+            isLoading.value= (false)
         }
     }
     private fun getCurrentTime(): String {
